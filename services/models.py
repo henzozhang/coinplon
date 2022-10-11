@@ -41,9 +41,8 @@ class ServicePage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel("description"),
-        FieldPanel("button_text"),
-        FieldPanel("external_page"),
-        PageChooserPanel("internal_page"),
-        FieldPanel("button_text"),
-        FieldPanel("service_image")
+        FieldPanel('internal_page'),
+        FieldPanel('external_page'),
+        FieldPanel('button_text'),
+        FieldPanel('service_image'), 
     ]
