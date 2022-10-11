@@ -1,8 +1,9 @@
 from django.db import models
 from wagtail.core.models import Page
-from wagtail.admin.edit_handlers import FieldPanel,PageChooserPanel
+from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel
 
 class ServicesListingPage(Page):
+    template = 'services/services_listing_page.html'
     subtitle = models.TextField(
         blank=True,
         max_length=500
@@ -10,6 +11,12 @@ class ServicesListingPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel("subtitle")
     ]
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context['services'] = ServicePage.objects.live().public()
+        return context
+
 
 class ServicePage(Page):
     description = models.TextField(
