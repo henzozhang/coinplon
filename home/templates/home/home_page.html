@@ -25,4 +25,8 @@
             </div>
         </class>
     </div>
+    {% for block in page.body %}
+        {{block}}
+    {% endfor %}
+    
 {% endblock banner %}

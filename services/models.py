@@ -1,4 +1,6 @@
+from xml.dom import ValidationErr
 from django.db import models
+from django.forms import ValidationError
 from wagtail.core.models import Page
 from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel
 
@@ -15,6 +17,7 @@ class ServicesListingPage(Page):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
         context['services'] = ServicePage.objects.live().public()
+        #import pudb; pu.db()
         return context
 
 
@@ -53,3 +56,20 @@ class ServicePage(Page):
         FieldPanel('button_text'),
         FieldPanel('service_image'), 
     ]
+    def clean(self):
+        super().clean()
+
+        if self.internal_page and self.external_page:
+            raise ValidationError({
+                'internal_page': ValidationError('SVP,sélectionner un lien external ou un lien internal'),
+                'external_page': ValidationError('SVP,sélectionner un lien external ou un lien internal')
+            })
+    
+    def clean(self):
+        super().clean()
+        
+        if not self.internal_page and not self.external_page:
+            raise ValidationError({
+                'internal_page': ValidationError('SVP,un lien external ou un lien internal est obligatoire'),
+                'external_page': ValidationError('SVP,un lien external ou un lien internal est obligatoire')
+            })
